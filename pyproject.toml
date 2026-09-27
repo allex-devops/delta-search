@@ -1,0 +1,32 @@
+[project]
+name = "delta-search"
+version = "0.1.0"
+description = "Semantic search API: metadata filters, incremental indexing, relevance metrics, load testing"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "chromadb>=1.0",
+    "fastapi>=0.115",
+    "httpx>=0.27",
+    "numpy>=1.26",
+    "psycopg[binary]>=3.2",
+    "pymupdf>=1.24",
+    "uvicorn>=0.30",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/searchsvc", "src/shared"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: calls a real embedding model (needs LLM_BASE_URL, LLM_API_KEY and EMBED_MODEL) over downloaded arXiv papers",
+    "pg: needs Postgres from docker compose up",
+]
+addopts = "-m 'not live and not pg'"
