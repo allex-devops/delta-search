@@ -1,0 +1,15 @@
+services:
+  pg:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_PASSWORD: searchsvc
+      POSTGRES_DB: searchsvc
+    ports: ["55432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+volumes:
+  pgdata:
